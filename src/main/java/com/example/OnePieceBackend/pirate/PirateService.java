@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 public class PirateService {
     
     private final PirateRepository pirateRepository;
@@ -13,11 +15,12 @@ public class PirateService {
         this.pirateRepository = pirateRepository;
     }
 
-    public List<Pirate> getPiratesByCrew(int crewId) {
+    public List<Pirate> getPiratesByCrew(Long crewId) {
         return pirateRepository.findPiratesByCrew(crewId);
     }
 
     public void addNewPirate(Pirate pirate) {
+        
 
     }
 
@@ -25,7 +28,7 @@ public class PirateService {
 
     }
 
-    public void updatePirate(Long pirateId, String name, String epithet, Integer bounty, String role, Integer age, String devilFruit) {
+    public void updatePirate(Long pirateId, String name, String epithet, Integer age, String devilFruit) {
 
     }
 

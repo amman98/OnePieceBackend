@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface PirateRepository {
     
     // @Query("SELECT * from Pirate WHERE crewId = ?")
-    List<Pirate> findPiratesByCrew(int crewId);
+    List<Pirate> findPiratesByCrew(Long crewId);
 }
