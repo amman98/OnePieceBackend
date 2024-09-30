@@ -1,7 +1,25 @@
 package com.example.OnePieceBackend.pirate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
+@Entity
+@Table
 public class Pirate {
+    @Id
+    @SequenceGenerator(
+        name = "pirate_sequence",
+        sequenceName = "pirate_sequence",
+        allocationSize = 1 
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "pirate_sequence"
+    )
     private Long id;
     private String name;
     private String epithet;

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 @RequestMapping(path = "api/v1/pirate")
 public class PirateController {
     private final PirateService pirateService;
@@ -21,8 +23,13 @@ public class PirateController {
         this.pirateService = pirateService;
     }
 
-    @GetMapping
-    public List<Pirate> getPiratesByCrew(Long crewId) {
+    @GetMapping(path = "{pirateId}")
+    public Pirate getPirate(@PathVariable("pirateId") Long pirateId) {
+        return pirateService.getPirate(pirateId);
+    }
+
+    @GetMapping(path = "crew/{crewId}")
+    public List<Pirate> getPiratesByCrew(@PathVariable("crewId") Long crewId) {
        return pirateService.getPiratesByCrew(crewId);
     }
     
@@ -32,7 +39,8 @@ public class PirateController {
     }
 
     @DeleteMapping(path = "{pirateId}")
-    public void deletePirate(@PathVariable("pirateId") Long pirateId) {
+    public void deletePirate(
+            @PathVariable("pirateId") Long pirateId) {
         pirateService.deletePirate(pirateId);
     }
 
@@ -41,9 +49,17 @@ public class PirateController {
             @PathVariable("pirateId") Long pirateId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String epithet,
+            @RequestParam(required = false) String role,
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) String devilFruit) {
-        pirateService.updatePirate(pirateId, name, epithet, age, devilFruit);
+        pirateService.updatePirate(pirateId, name, epithet, role, age, devilFruit);
     }
     
+    @PutMapping(path = "{pirateId}/{crewId}")
+    public void changeCrews(
+            @PathVariable("pirateId") Long pirateId,
+            @PathVariable("crewId") Long newCrewId
+    ) {
+        pirateService.changeCrews(pirateId, newCrewId);
+    }
 }
