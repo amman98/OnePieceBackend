@@ -1,6 +1,7 @@
 package com.example.OnePieceBackend.pirate;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +25,7 @@ public class PirateController {
     }
 
     @GetMapping(path = "{pirateId}")
-    public Pirate getPirate(@PathVariable("pirateId") Long pirateId) {
+    public Optional<Pirate> getPirate(@PathVariable("pirateId") Long pirateId) {
         return pirateService.getPirate(pirateId);
     }
 

@@ -2,6 +2,7 @@ package com.example.OnePieceBackend.pirate;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class PirateService {
         this.pirateRepository = pirateRepository;
     }
 
-    public Pirate getPirate(Long pirateId) {
-        return pirateRepository.getReferenceById(pirateId);
+    public Optional<Pirate> getPirate(Long pirateId) {
+        return pirateRepository.findById(pirateId);
     }
 
     public List<Pirate> getPiratesByCrew(Long crewId) {
@@ -50,9 +51,11 @@ public class PirateService {
 
     @Transactional
     public void updatePirate(Long pirateId, String name, String epithet, String role, Integer age, String devilFruit) {
-        Pirate pirate = pirateRepository.findById(pirateId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "pirate with id " + pirateId + " does not exist"));
+        if(!pirateRepository.existsById(pirateId)) {
+            throw new IllegalStateException("pirate with id " + pirateId + " does not exist");
+        }
+        
+        Pirate pirate = pirateRepository.getReferenceById(pirateId);
 
         if(name != null && name.length() > 0 && !Objects.equals(pirate.getName(), name)) {
             pirate.setName(name);
@@ -62,8 +65,9 @@ public class PirateService {
             pirate.setEpithet(epithet);
         }
 
-        // no validation checks needed as there will be radio buttons in UI for determining role
-        pirate.setRole(role);
+        if(role != null && role.length() > 0 && !Objects.equals(pirate.getRole(), role)) {
+            pirate.setRole(role);
+        }
 
         if(age != null && age > 0 && !Objects.equals(pirate.getAge(), age)) {
             pirate.setAge(age);
@@ -76,6 +80,10 @@ public class PirateService {
 
     @Transactional
     public void changeCrews(Long pirateId, Long newCrewId) {
+        if(!pirateRepository.existsById(pirateId)) {
+            throw new IllegalStateException("pirate with id " + pirateId + " does not exist");
+        }
+
         Pirate pirate = pirateRepository.getReferenceById(pirateId);
 
         if(pirate.getRole().equals("Captain")) {
